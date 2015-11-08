@@ -14,13 +14,15 @@ import java.util.Map;
  * Created by lwenn on 15/11/1.
  */
 public class LoginController extends AbstractController {
+
+    private UserDao dao;
+
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView view;
         Map<String, String[]> map = request.getParameterMap();
         String name = map.get("name")[0];
         String password = map.get("password")[0];
-        UserDao dao = new UserDao();
         List<User> list = dao.getUsersByName(name);
         if (list != null && list.get(0) != null) {
             User user = list.get(0);
@@ -33,5 +35,13 @@ public class LoginController extends AbstractController {
         view = new ModelAndView("oldUser");
         view.addObject("message", "WRONG NAME OR PASSWORD!");
         return view;
+    }
+
+    public UserDao getDao() {
+        return dao;
+    }
+
+    public void setDao(UserDao dao) {
+        this.dao = dao;
     }
 }

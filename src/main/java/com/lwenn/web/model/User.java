@@ -5,11 +5,12 @@ package com.lwenn.web.model;
  */
 public class User {
 
-    private int userId;
+    //主键的类型一般使用Long
+    private Long userId;
     private String userName;
     private String userPassword;
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
@@ -21,7 +22,7 @@ public class User {
         return userPassword;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

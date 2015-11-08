@@ -2,16 +2,20 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
+<!--
+    ResultMap column是数据库的列名
+-->
+
 <sqlMap namespace="User">
     <resultMap id="userResult" class="com.lwenn.web.model.User">
         <result property="userId" column="user_id" />
-        <result property="userName" column="userName" />
-        <result property="userPassword" column="userPassword" />
+        <result property="userName" column="user_name" />
+        <result property="userPassword" column="user_password" />
     </resultMap>
 
     <insert id="addUser" parameterClass="com.lwenn.web.model.User">
         INSERT INTO lwenn_user (user_name, user_password) VALUES (#userName#, #userPassword#)
-        <selectKey keyProperty="id" resultClass="java.lang.Long">
+        <selectKey keyProperty="userId" resultClass="java.lang.Long">
             SELECT LAST_INSERT_ID() AS user_id
         </selectKey>
     </insert>

@@ -14,6 +14,8 @@ import java.util.Map;
  */
 public class RegisterController extends AbstractController {
 
+    private UserDao dao;
+
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView view;
@@ -23,7 +25,6 @@ public class RegisterController extends AbstractController {
         User user = new User();
         user.setUserName(name);
         user.setUserPassword(password);
-        UserDao dao = new UserDao();
         if (dao.addUser(user) != null) {
             view = new ModelAndView("newUser");
             view.addObject("user", user);
@@ -32,5 +33,13 @@ public class RegisterController extends AbstractController {
         view = new ModelAndView();
         view.addObject("message", "REGISTER FAILED.");
         return view;
+    }
+
+    public UserDao getDao() {
+        return dao;
+    }
+
+    public void setDao(UserDao dao) {
+        this.dao = dao;
     }
 }
