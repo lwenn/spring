@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="User">
+    <resultMap id="userResult" class="com.lwenn.web.model.User">
+        <result property="userId" column="user_id" />
+        <result property="userName" column="userName" />
+        <result property="userPassword" column="userPassword" />
+    </resultMap>
+
+    <insert id="addUser" parameterClass="com.lwenn.web.model.User">
+        INSERT INTO lwenn_user (user_name, user_password) VALUES (#userName#, #userPassword#)
+        <selectKey keyProperty="id" resultClass="java.lang.Long">
+            SELECT LAST_INSERT_ID() AS user_id
+        </selectKey>
+    </insert>
+
+    <update id="modifyUser" parameterClass="com.lwenn.web.model.User">
+        UPDATE lwenn_user SET user_name = #userName#, user_password = #userPassword# WHERE user_id = #userId#
+    </update>
+
+    <delete id="deleteUser" parameterClass="java.lang.Long">
+        DELETE FROM lwenn_user WHERE user_id = #userId#
+    </delete>
+
+    <select id="getUserById" parameterClass="int" resultMap="userResult">
+        SELECT * FROM lwenn_user WHERE user_id = #userId#
+    </select>
+
+    <select id="getUserByName" parameterClass="String" resultMap="userResult">
+        SELECT * FROM lwenn_user WHERE user_name = #userName#
+    </select>
+</sqlMap>

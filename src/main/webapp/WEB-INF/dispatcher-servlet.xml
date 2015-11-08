@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="indexController" class="com.lwenn.web.controller.IndexController"/>
+    <bean id="loginController" class="com.lwenn.web.controller.LoginController"/>
+    <bean id="registerController" class="com.lwenn.web.controller.RegisterController"/>
+
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="index.do">indexController</prop>
+                <prop key="login.do">loginController</prop>
+                <prop key="register.do">registerController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:database.properties</value>
+        </property>
+    </bean>
+
+    <!-- 数据连接池 -->
+    <bean id="dbcpSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${database.driver}" />
+        <property name="url" value="${database.url}" />
+        <property name="username" value="${database.username}" />
+        <property name="password" value="${database.password}" />
+    </bean>
+</beans>
