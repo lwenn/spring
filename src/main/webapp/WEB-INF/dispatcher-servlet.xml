@@ -29,6 +29,11 @@
         </property>
     </bean>
 
+    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:sqlmap/sqlmap-config.xml" />
+        <property name="dataSource" value="dbcpSource" />
+    </bean>
+
     <!-- 数据连接池 -->
     <bean id="dbcpSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="${database.driver}" />
