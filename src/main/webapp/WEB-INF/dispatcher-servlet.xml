@@ -3,10 +3,42 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="indexController" class="com.lwenn.web.controller.IndexController"/>
-    <bean id="loginController" class="com.lwenn.web.controller.LoginController"/>
-    <bean id="registerController" class="com.lwenn.web.controller.RegisterController"/>
+    <!-- 不明白,* -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:database.properties</value>
+        </property>
+    </bean>
 
+    <!-- 数据连接池 -->
+    <bean id="dbcpSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${database.driver}" />
+        <property name="url" value="${database.url}" />
+        <property name="username" value="${database.username}" />
+        <property name="password" value="${database.password}" />
+    </bean>
+
+    <!-- sqlMap工具类，加载数据源的配置，加载用户的sqlMap--><!-- 不明白 -->
+    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:sqlmap/sqlmap-config.xml" />
+        <property name="dataSource" ref="dbcpSource" />
+    </bean>
+
+    <!-- 新建Dao实现类，并装载sqlMap工具-->
+    <bean id="userDao" class="com.lwenn.web.dao.UserDao">
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <!-- 新建controller类，并装载Dao实现 -->
+    <bean id="indexController" class="com.lwenn.web.controller.IndexController" />
+    <bean id="loginController" class="com.lwenn.web.controller.LoginController">
+        <property name="dao" ref="userDao" />
+    </bean>
+    <bean id="registerController" class="com.lwenn.web.controller.RegisterController">
+        <property name="dao" ref="userDao" />
+    </bean>
+
+    <!-- 转发请求 -->
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
@@ -17,28 +49,10 @@
         </property>
     </bean>
 
+    <!-- url的匹配规则 -->
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="prefix" value="/WEB-INF/jsp/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
-
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location">
-            <value>classpath:database.properties</value>
-        </property>
-    </bean>
-
-    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
-        <property name="configLocation" value="classpath:sqlmap/sqlmap-config.xml" />
-        <property name="dataSource" value="dbcpSource" />
-    </bean>
-
-    <!-- 数据连接池 -->
-    <bean id="dbcpSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="${database.driver}" />
-        <property name="url" value="${database.url}" />
-        <property name="username" value="${database.username}" />
-        <property name="password" value="${database.password}" />
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
     </bean>
 </beans>

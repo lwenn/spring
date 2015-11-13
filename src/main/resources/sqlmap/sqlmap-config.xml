@@ -4,5 +4,5 @@
 
 <sqlMapConfig>
     <settings useStatementNamespaces="true" />
-    <sqlMap resource="sqlMap/user-sqlMap.xml"/>
+    <sqlMap resource="sqlmap/user-sqlmap.xml"/><!-- 为什么要带上级目录名 -->
 </sqlMapConfig>

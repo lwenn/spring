@@ -10,23 +10,24 @@ import java.util.List;
  */
 public class UserDao extends SqlMapClientDaoSupport {
 
-    public User addUser(User user) {
-        return (User) getSqlMapClientTemplate().insert("addUser", user);
+    // 这个函数返回的是Insert之后这条记录的主键，并不是插入的对象本身。
+    public Long addUser(User user) {
+        return (Long) getSqlMapClientTemplate().insert("User.addUser", user);
     }
 
     public int updateUser(User user) {
-        return getSqlMapClientTemplate().update("modifyUser", user);
+        return getSqlMapClientTemplate().update("User.modifyUser", user);
     }
 
-    public int deleteUser(int id) {
-        return getSqlMapClientTemplate().delete("deleteUser", id);
+    public int deleteUser(Long id) {
+        return getSqlMapClientTemplate().delete("User.deleteUser", id);
     }
 
-    public User getUserById(int id) {
-        return (User) getSqlMapClientTemplate().queryForObject("getUserById", id);
+    public User getUserById(Long id) {
+        return (User) getSqlMapClientTemplate().queryForObject("User.getUserById", id);
     }
 
     public List<User> getUsersByName(String name) {
-        return (List<User>) getSqlMapClientTemplate().queryForList("getUserByName", name);
+        return (List<User>) getSqlMapClientTemplate().queryForList("User.getUserByName", name);
     }
 }
